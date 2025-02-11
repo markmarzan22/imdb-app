@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { MovieSearchResponse } from '@/app/models/movieOverview.model';
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
@@ -20,7 +21,7 @@ export async function GET(req: Request) {
             url += `&i=${id}`;
         }
 
-        const response = await axios.get(url);
+        const response = await axios.get<MovieSearchResponse>(url);
         return NextResponse.json(response.data);
     } catch (error) {
         console.error('OMDb API Error:', error);
