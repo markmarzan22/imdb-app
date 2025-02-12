@@ -12,8 +12,12 @@ export enum MediaType {
     episode = 'episode'
 }
 
-export interface MovieSearchResponse {
+export interface MovieSearchResponse extends MovieResponseStatus {
     Search: MovieOverview[];
     totalResults: string;
+}
+
+export interface MovieResponseStatus {
     Response: 'True' | 'False';
+    Error?: string;
 }

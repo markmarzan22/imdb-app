@@ -5,10 +5,11 @@ import { Navbar, Collapse, IconButton, Input, Tabs, TabsHeader, Tab, Chip } from
 import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSearchMovies } from '@/hooks/useSearchMovies';
 import { useAppContext } from '@/context/AppContext';
+import { MediaType } from '@/app/models/movieOverview.model';
 
 const TopNavbar = () => {
     const { searchMovies } = useSearchMovies();
-    const { query, setQuery } = useAppContext();
+    const { query, setQuery, mediaType, setMediaType } = useAppContext();
     const [openNav, setOpenNav] = useState(false);
 
     useEffect(() => {
@@ -18,26 +19,31 @@ const TopNavbar = () => {
     const TABS = [
         {
             label: 'All',
-            value: 'all'
+            value: ''
         },
         {
             label: 'Movie',
-            value: 'movie'
+            value: MediaType.movie
         },
         {
             label: 'Series',
-            value: 'series'
+            value: MediaType.series
         },
         {
             label: 'Episode',
-            value: 'episode'
+            value: MediaType.episode
         }
     ];
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
         setQuery(value);
-        searchMovies(value);
+        searchMovies(value, mediaType as MediaType);
+    };
+
+    const onTabChange = (value: string) => {
+        setMediaType(value);
+        searchMovies(query, value as MediaType);
     };
 
     return (
@@ -64,10 +70,10 @@ const TopNavbar = () => {
                     )}
                 </IconButton>
                 <div className="hidden lg:block">
-                    <Tabs value="all" className="w-full md:w-max">
+                    <Tabs value={mediaType} className="w-full md:w-max">
                         <TabsHeader>
                             {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
+                                <Tab key={value} value={value} onClick={() => onTabChange(value)}>
                                     <span className="p-3">{label}</span>
                                 </Tab>
                             ))}
@@ -86,10 +92,10 @@ const TopNavbar = () => {
                             />
                         </div>
                     </div>
-                    <Tabs value="all" className="w-full md:w-max mt-4">
+                    <Tabs value={mediaType} className="w-full md:w-max mt-4">
                         <TabsHeader>
                             {TABS.map(({ label, value }) => (
-                                <Tab key={value} value={value}>
+                                <Tab key={value} value={value} onClick={() => onTabChange(value)}>
                                     <span className="p-3">{label}</span>
                                 </Tab>
                             ))}

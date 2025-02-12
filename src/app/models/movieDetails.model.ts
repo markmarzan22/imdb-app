@@ -1,11 +1,11 @@
-import { MediaType } from './movieOverview.model';
+import { MediaType, MovieResponseStatus } from './movieOverview.model';
 
 interface MovieRating {
     Source: string;
     Value: string;
 }
 
-export interface MovieDetails {
+export interface MovieDetails extends MovieResponseStatus {
     Title: string;
     Year: string;
     Rated: string;
@@ -27,5 +27,4 @@ export interface MovieDetails {
     imdbID: string;
     Type: MediaType;
     totalSeasons?: string;
-    Response: 'True' | 'False';
 }

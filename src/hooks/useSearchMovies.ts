@@ -2,11 +2,23 @@ import { useCallback } from 'react';
 import axios from 'axios';
 import { useAppContext } from '@/context/AppContext';
 import debounce from 'lodash.debounce';
-import { MovieSearchResponse } from '@/app/models/movieOverview.model';
+import { MediaType, MovieSearchResponse } from '@/app/models/movieOverview.model';
 
 export const useSearchMovies = () => {
-    const { setMovies, query, setQuery, currentPage, setCurrentPage, isLoading, setIsLoading, hasMore, setHasMore } =
-        useAppContext();
+    const {
+        setMovies,
+        query,
+        setQuery,
+        currentPage,
+        setCurrentPage,
+        isLoading,
+        setIsLoading,
+        hasMore,
+        setHasMore,
+        mediaType,
+        setTotalResults,
+        setResponseMessage
+    } = useAppContext();
 
     const resetMovies = () => {
         setMovies([]);
@@ -15,20 +27,20 @@ export const useSearchMovies = () => {
     };
 
     const searchMovies = useCallback(
-        debounce(async (newQuery: string) => {
-            if (!newQuery.trim() || isLoading) {
+        debounce(async (newQuery: string, newMediaType?: MediaType) => {
+            if (!newQuery.trim()) {
                 resetMovies();
                 return;
             }
 
-            const isNewSearch = newQuery !== query;
+            const isNewSearch = newQuery !== query || newMediaType !== mediaType;
 
             if (isNewSearch) resetMovies();
 
             setIsLoading(true);
             try {
                 const { data } = await axios.get<MovieSearchResponse>('/api/movies', {
-                    params: { query: newQuery, page: isNewSearch ? 1 : currentPage }
+                    params: { query: newQuery, page: isNewSearch ? 1 : currentPage, type: newMediaType }
                 });
 
                 setMovies((prevMovies) => {
@@ -36,6 +48,8 @@ export const useSearchMovies = () => {
                     setHasMore(newMovies.length < +data.totalResults);
                     return newMovies;
                 });
+                setTotalResults(data.totalResults);
+                setResponseMessage({ Response: data.Response, Error: data?.Error });
                 setCurrentPage((prevPage) => prevPage + 1);
             } catch (error) {
                 console.error('Error fetching movies:', error);

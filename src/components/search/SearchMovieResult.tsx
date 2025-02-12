@@ -5,17 +5,18 @@ import SearchMovieCard from './SearchMovieCard';
 import { useEffect } from 'react';
 import { useSearchMovies } from '@/hooks/useSearchMovies';
 import SkeletonLoading from './SkeletonLoading';
-import { Button } from '@material-tailwind/react';
+import { Button, Typography } from '@material-tailwind/react';
 import { ArrowLongDownIcon } from '@heroicons/react/24/outline';
+import { MediaType } from '@/app/models/movieOverview.model';
 
 const SearchMovieResult = () => {
-    const { movies, hasMore, isLoading, query } = useAppContext();
+    const { movies, hasMore, isLoading, query, mediaType } = useAppContext();
     const { searchMovies } = useSearchMovies();
 
     const handleScroll = () => {
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
         if (hasMore && !isLoading) {
-            searchMovies(query);
+            searchMovies(query, mediaType as MediaType);
         }
     };
 
@@ -25,7 +26,12 @@ const SearchMovieResult = () => {
     }, [hasMore, isLoading]);
 
     return (
-        <div className="max-w-screen-xl mx-auto ">
+        <>
+            {movies.length !== 0 ? (
+                <Typography variant="h6" color="blue-gray" className="m-6">
+                    Search Results:
+                </Typography>
+            ) : null}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-6 mb-8">
                 {movies.map((movie) => (
                     <SearchMovieCard key={movie.imdbID} movie={movie} />
@@ -40,7 +46,7 @@ const SearchMovieResult = () => {
                     </Button>
                 </div>
             )}
-        </div>
+        </>
     );
 };
 
