@@ -8,18 +8,22 @@ export const useSearchMovies = () => {
     const { setMovies, query, setQuery, currentPage, setCurrentPage, isLoading, setIsLoading, hasMore, setHasMore } =
         useAppContext();
 
+    const resetMovies = () => {
+        setMovies([]);
+        setCurrentPage(1);
+        setHasMore(false);
+    };
+
     const searchMovies = useCallback(
         debounce(async (newQuery: string) => {
-            if (!newQuery.trim() || isLoading) return;
+            if (!newQuery.trim() || isLoading) {
+                resetMovies();
+                return;
+            }
 
             const isNewSearch = newQuery !== query;
 
-            if (isNewSearch) {
-                // Reset everything if it's a new search
-                setMovies([]);
-                setCurrentPage(1);
-                setHasMore(true);
-            }
+            if (isNewSearch) resetMovies();
 
             setIsLoading(true);
             try {

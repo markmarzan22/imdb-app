@@ -23,7 +23,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     const [query, setQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true);
+    const [hasMore, setHasMore] = useState(false);
 
     return (
         <AppContext.Provider

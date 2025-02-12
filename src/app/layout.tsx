@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AppProvider } from '@/context/AppContext';
-import { ThemeProviderWrapper } from './ThemeProviderWrapper';
 
 export const metadata: Metadata = {
     title: 'IMDB App',
@@ -12,9 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en">
             <body>
-                <ThemeProviderWrapper>
-                    <AppProvider>{children}</AppProvider>
-                </ThemeProviderWrapper>
+                <AppProvider>{children}</AppProvider>
             </body>
         </html>
     );
