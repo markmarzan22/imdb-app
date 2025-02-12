@@ -6,6 +6,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('query');
     const id = searchParams.get('id');
+    const page = searchParams.get('page');
 
     if (!query && !id) {
         return NextResponse.json({ error: 'Query or ID is required' }, { status: 400 });
@@ -16,7 +17,7 @@ export async function GET(req: Request) {
         let url = `http://www.omdbapi.com/?apikey=${apiKey}`;
 
         if (query) {
-            url += `&s=${query}`;
+            url += `&s=${query}&page=${page}`;
         } else if (id) {
             url += `&i=${id}`;
         }
