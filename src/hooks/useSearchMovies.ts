@@ -27,8 +27,11 @@ export const useSearchMovies = () => {
                     params: { query: newQuery, page: isNewSearch ? 1 : currentPage }
                 });
 
-                setMovies((prevMovies) => (isNewSearch ? data.Search || [] : [...prevMovies, ...(data.Search || [])]));
-                setHasMore(data.Search && data.Search.length > 0);
+                setMovies((prevMovies) => {
+                    const newMovies = isNewSearch ? data.Search || [] : [...prevMovies, ...(data.Search || [])];
+                    setHasMore(newMovies.length < +data.totalResults);
+                    return newMovies;
+                });
                 setCurrentPage((prevPage) => prevPage + 1);
             } catch (error) {
                 console.error('Error fetching movies:', error);
