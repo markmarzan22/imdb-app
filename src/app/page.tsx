@@ -5,9 +5,11 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { Alert, Typography } from '@material-tailwind/react';
 
 const Home = () => {
-    const { movies, responseMessage } = useAppContext();
+    const { movies, responseMessage, isLoading } = useAppContext();
 
-    if (responseMessage?.Response === 'False') {
+    if (isLoading) {
+        return;
+    } else if (responseMessage?.Response === 'False') {
         return (
             <Alert
                 variant="gradient"
