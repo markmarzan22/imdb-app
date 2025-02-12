@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from 'react';
+'use client';
+
+import { useEffect, useState } from 'react';
 import { Navbar, Collapse, IconButton, Input, Tabs, TabsHeader, Tab, Chip } from '@material-tailwind/react';
 import { Bars3Icon, MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import axios from 'axios';
-import { MovieSearchResponse } from '@/app/models/movieOverview.model';
+import { useSearchMovies } from '@/hooks/useSearchMovies';
 import { useAppContext } from '@/context/AppContext';
-import debounce from 'lodash.debounce';
 
 const TopNavbar = () => {
-    const { setMovies } = useAppContext();
-    const [query, setQuery] = useState('');
+    const { searchMovies } = useSearchMovies();
+    const { query, setQuery } = useAppContext();
     const [openNav, setOpenNav] = useState(false);
 
     useEffect(() => {
@@ -33,21 +33,6 @@ const TopNavbar = () => {
             value: 'episode'
         }
     ];
-
-    const searchMovies = useCallback(
-        debounce(async (searchQuery) => {
-            if (!searchQuery) return;
-            try {
-                const { data } = await axios.get<MovieSearchResponse>('/api/movies', {
-                    params: { query: searchQuery }
-                });
-                setMovies(data.Search || []);
-            } catch (error) {
-                console.error('Error fetching movies:', error);
-            }
-        }, 1000),
-        []
-    );
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value } = e.target;
