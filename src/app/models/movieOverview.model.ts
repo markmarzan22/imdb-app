@@ -6,7 +6,7 @@ export interface MovieOverview {
     Poster: string;
 }
 
-enum MediaType {
+export enum MediaType {
     movie = 'movie',
     series = 'series',
     episode = 'episode'

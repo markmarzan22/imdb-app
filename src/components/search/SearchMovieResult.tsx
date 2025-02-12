@@ -25,22 +25,22 @@ const SearchMovieResult = () => {
     }, [hasMore, isLoading]);
 
     return (
-        <>
-            <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6">
+        <div className="max-w-screen-xl mx-auto ">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-6 mb-8">
                 {movies.map((movie) => (
                     <SearchMovieCard key={movie.imdbID} movie={movie} />
                 ))}
                 {isLoading && Array.from({ length: 5 }).map((el, index) => <SkeletonLoading key={index} />)}
             </div>
             {hasMore && (
-                <div className="max-w-screen-xl mx-auto text-center mt-5 mb-5">
+                <div className="text-center mt-5 mb-5">
                     <Button variant="text">
                         Scroll down to load more popular matches
                         <ArrowLongDownIcon className="h-5 mx-auto my-6" />
                     </Button>
                 </div>
             )}
-        </>
+        </div>
     );
 };
 

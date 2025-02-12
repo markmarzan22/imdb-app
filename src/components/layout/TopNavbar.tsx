@@ -79,7 +79,11 @@ const TopNavbar = () => {
                 <div className="container mx-auto">
                     <div className="flex flex-col gap-x-2 sm:flex-row sm:items-center mt-4">
                         <div className="relative w-full gap-2 md:w-max">
-                            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
+                            <Input
+                                label="Search"
+                                onChange={handleSearch}
+                                icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+                            />
                         </div>
                     </div>
                     <Tabs value="all" className="w-full md:w-max mt-4">
