@@ -15,8 +15,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body>
                 <AppProvider>
                     <TopNavbar />
-                    {children}
-                    <SearchMovieResult />
+                    <div className="max-w-screen-xl mx-auto px-6 mt-6">
+                        {children}
+                        <SearchMovieResult />
+                    </div>
                 </AppProvider>
             </body>
         </html>

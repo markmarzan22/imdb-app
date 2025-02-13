@@ -7,6 +7,7 @@ export async function GET(req: Request) {
     const query = searchParams.get('query');
     const id = searchParams.get('id');
     const page = searchParams.get('page');
+    const type = searchParams.get('type');
 
     if (!query && !id) {
         return NextResponse.json({ error: 'Query or ID is required' }, { status: 400 });
@@ -20,6 +21,9 @@ export async function GET(req: Request) {
             url += `&s=${query}&page=${page}`;
         } else if (id) {
             url += `&i=${id}`;
+        }
+        if (type) {
+            url += `&type=${type}`;
         }
 
         const response = await axios.get<MovieSearchResponse>(url);

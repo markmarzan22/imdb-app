@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardBody, CardHeader, Typography } from '@material-tailwind/react';
+import { Card, CardBody, CardHeader, IconButton, Typography } from '@material-tailwind/react';
 import type { MovieDetails } from '@/app/models/movieDetails.model';
-import { PhotoIcon, StarIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, StarIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import SkeletonLoading from '@/components/search/SkeletonLoading';
 
 export default function MovieDetails() {
     const { id } = useParams();
@@ -13,19 +14,29 @@ export default function MovieDetails() {
     const [movie, setMovie] = useState<MovieDetails | null>(null);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        if (id) {
-            axios
-                .get(`/api/movies?id=${id}`)
-                .then((res) => setMovie(res.data))
-                .catch((err) => {
-                    console.error('Error fetching movie:', err);
-                })
-                .finally(() => setLoading(false));
+        if (typeof id === 'string') {
+            searchMovieById(id);
         }
     }, [id]);
 
-    if (loading) return <div>Loading...</div>;
-    if (!movie) return <div>Movie not found</div>;
+    const searchMovieById = (id: string) => {
+        setLoading(true);
+        axios
+            .get<MovieDetails>(`/api/movies?id=${id}`)
+            .then((res) => setMovie(res.data))
+            .catch((err) => {
+                console.error('Error fetching movie:', err);
+            })
+            .finally(() => setLoading(false));
+    };
+
+    if (loading)
+        return (
+            <div className="mx-auto max-w-screen-md mt-6">
+                <SkeletonLoading />
+            </div>
+        );
+    if (!movie || movie.Response === 'False') return <div>Movie not found</div>;
 
     const {
         Title,
@@ -68,9 +79,24 @@ export default function MovieDetails() {
         { field: 'Metascore', value: Metascore }
     ];
 
+    const handleNavigateHome = (e: MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        router.push('/');
+    };
+
     return (
         <div className="max-w-screen-lg mx-auto">
-            <Card className="md:flex-row m-6">
+            <div className="text-right">
+                <IconButton
+                    variant="text"
+                    color="gray"
+                    className="rounded-full p-2 hover:bg-gray-200 bg-red-50 relative -bottom-6 z-[1]"
+                    onClick={(e: MouseEvent<HTMLButtonElement>) => handleNavigateHome(e)}
+                >
+                    <XMarkIcon className="h-5 w-5" />
+                </IconButton>
+            </div>
+            <Card className="md:flex-row m-6 mt-0">
                 <CardHeader shadow={false} floated={false} className="m-0 md:w-2/5 shrink-0 md:rounded-r-none">
                     {Poster !== 'N/A' ? (
                         <img src={Poster} alt="card-image" className="h-full w-full object-cover" />
