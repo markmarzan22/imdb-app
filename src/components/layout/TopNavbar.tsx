@@ -87,6 +87,7 @@ const TopNavbar = () => {
                         <div className="relative w-full gap-2 md:w-max">
                             <Input
                                 label="Search"
+                                value={query}
                                 onChange={handleSearch}
                                 icon={<MagnifyingGlassIcon className="h-5 w-5" />}
                             />

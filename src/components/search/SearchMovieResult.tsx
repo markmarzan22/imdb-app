@@ -28,11 +28,11 @@ const SearchMovieResult = () => {
     return (
         <>
             {movies.length !== 0 ? (
-                <Typography variant="h6" color="blue-gray" className="m-6">
+                <Typography variant="h6" color="blue-gray">
                     Search Results:
                 </Typography>
             ) : null}
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 mb-8">
                 {movies.map((movie) => (
                     <SearchMovieCard key={movie.imdbID} movie={movie} />
                 ))}
