@@ -1,5 +1,4 @@
 import { useCallback } from 'react';
-import axios from 'axios';
 import { useAppContext } from '@/context/AppContext';
 import debounce from 'lodash.debounce';
 import { MediaType, MovieSearchResponse } from '@/app/models/movieOverview.model';
@@ -39,9 +38,10 @@ export const useSearchMovies = () => {
 
             setIsLoading(true);
             try {
-                const { data } = await axios.get<MovieSearchResponse>('/api/movies/search', {
-                    params: { query: newQuery, page: isNewSearch ? 1 : currentPage, type: newMediaType }
-                });
+                const response = await fetch(
+                    `/api/movies/search?query=${newQuery}&page=${isNewSearch ? 1 : currentPage}&type=${newMediaType}`
+                );
+                const data: MovieSearchResponse = await response.json();
 
                 setMovies((prevMovies) => {
                     const newMovies = isNewSearch ? data.Search || [] : [...prevMovies, ...(data.Search || [])];

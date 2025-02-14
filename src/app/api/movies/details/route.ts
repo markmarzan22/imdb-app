@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
 import { MovieDetails } from '@/app/models/movieDetails.model';
+
+export const config = {
+    runtime: 'edge'
+};
 
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
@@ -18,8 +21,10 @@ export async function GET(req: Request) {
             url += `&i=${id}`;
         }
 
-        const response = await axios.get<MovieDetails>(url);
-        return NextResponse.json(response.data);
+        const response = await fetch(url, { next: { revalidate: 3600 } });
+        const data: MovieDetails = await response.json();
+
+        return NextResponse.json(data);
     } catch (error) {
         console.error('OMDb API Error:', error);
         return NextResponse.json({ error: 'Failed to fetch movies' }, { status: 500 });
