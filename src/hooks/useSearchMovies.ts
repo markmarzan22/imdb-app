@@ -39,7 +39,7 @@ export const useSearchMovies = () => {
 
             setIsLoading(true);
             try {
-                const { data } = await axios.get<MovieSearchResponse>('/api/movies', {
+                const { data } = await axios.get<MovieSearchResponse>('/api/movies/search', {
                     params: { query: newQuery, page: isNewSearch ? 1 : currentPage, type: newMediaType }
                 });
 
