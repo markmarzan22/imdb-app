@@ -1,7 +1,6 @@
 'use client';
 
 import { MouseEvent, useEffect, useState } from 'react';
-import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
 import { Alert, Card, CardBody, CardHeader, IconButton, Typography } from '@material-tailwind/react';
 import type { MovieDetails } from '@/app/models/movieDetails.model';
@@ -19,15 +18,17 @@ export default function MovieDetails() {
         }
     }, [id]);
 
-    const searchMovieById = (id: string) => {
-        setLoading(true);
-        axios
-            .get<MovieDetails>(`/api/movies/details?id=${id}`)
-            .then((res) => setMovie(res.data))
-            .catch((err) => {
-                console.error('Error fetching movie:', err);
-            })
-            .finally(() => setLoading(false));
+    const searchMovieById = async (id: string) => {
+        try {
+            setLoading(true);
+            const response = await fetch(`/api/movies/details?id=${id}`);
+            const data: MovieDetails = await response.json();
+            setMovie(data);
+        } catch (error) {
+            console.error('Error fetching movie:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     if (loading)
