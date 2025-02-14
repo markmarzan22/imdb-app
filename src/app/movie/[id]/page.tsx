@@ -3,9 +3,9 @@
 import { MouseEvent, useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useRouter } from 'next/navigation';
-import { Card, CardBody, CardHeader, IconButton, Typography } from '@material-tailwind/react';
+import { Alert, Card, CardBody, CardHeader, IconButton, Typography } from '@material-tailwind/react';
 import type { MovieDetails } from '@/app/models/movieDetails.model';
-import { PhotoIcon, StarIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ExclamationTriangleIcon, PhotoIcon, StarIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import SkeletonLoading from '@/components/search/SkeletonLoading';
 
 export default function MovieDetails() {
@@ -22,7 +22,7 @@ export default function MovieDetails() {
     const searchMovieById = (id: string) => {
         setLoading(true);
         axios
-            .get<MovieDetails>(`/api/movies?id=${id}`)
+            .get<MovieDetails>(`/api/movies/details?id=${id}`)
             .then((res) => setMovie(res.data))
             .catch((err) => {
                 console.error('Error fetching movie:', err);
@@ -36,7 +36,18 @@ export default function MovieDetails() {
                 <SkeletonLoading />
             </div>
         );
-    if (!movie || movie.Response === 'False') return <div>Movie not found</div>;
+    if (!movie || movie.Response === 'False')
+        return (
+            <Alert
+                variant="gradient"
+                className="max-w-screen-md mx-auto my-10"
+                icon={<ExclamationTriangleIcon className="h-5 w-5" />}
+            >
+                <Typography color="white" className="font-normal text-center">
+                    {movie?.Error}
+                </Typography>
+            </Alert>
+        );
 
     const {
         Title,

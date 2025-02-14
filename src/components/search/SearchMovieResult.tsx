@@ -2,15 +2,15 @@
 
 import { useAppContext } from '@/context/AppContext';
 import SearchMovieCard from './SearchMovieCard';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSearchMovies } from '@/hooks/useSearchMovies';
 import SkeletonLoading from './SkeletonLoading';
-import { Button, Typography } from '@material-tailwind/react';
+import { Button, Progress, Typography } from '@material-tailwind/react';
 import { ArrowLongDownIcon } from '@heroicons/react/24/outline';
 import { MediaType } from '@/app/models/movieOverview.model';
 
 const SearchMovieResult = () => {
-    const { movies, hasMore, isLoading, query, mediaType } = useAppContext();
+    const { movies, hasMore, isLoading, query, mediaType, totalResults } = useAppContext();
     const { searchMovies } = useSearchMovies();
 
     const handleScroll = () => {
@@ -20,6 +20,8 @@ const SearchMovieResult = () => {
         }
     };
 
+    const progress = useMemo(() => (movies.length / +totalResults) * 100, [movies.length, totalResults]);
+
     useEffect(() => {
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
@@ -28,9 +30,12 @@ const SearchMovieResult = () => {
     return (
         <>
             {movies.length !== 0 ? (
-                <Typography variant="h6" color="blue-gray">
-                    Search Results:
+                <>
+                <Typography variant="h6" color="blue-gray" className='mb-2'>
+                    Search Results: {movies.length} of {totalResults} records
                 </Typography>
+                <Progress value={progress} />
+                </>
             ) : null}
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 mb-8">
                 {movies.map((movie) => (
