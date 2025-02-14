@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 ## Getting Started
 
-First, run the development server:
+To run the application in a local development environment:
+1. Obtain your own API key from: OMDb API.
+2. Update the OMDB_API_KEY value in the .env.local file.
+3. Perform the following commands
 
 ```bash
+npm i
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Demo Page
 
-## Learn More
+If you want to test the application, you can visit the demo page that I have deployed on the Vercel platform:
 
-To learn more about Next.js, take a look at the following resources:
+https://imdb-app-mark-kenneth-marzan-submission.vercel.app/
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Features and Pull Requests
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+[FEATURE_01]: Implement movie search API
 
-## Deploy on Vercel
+[FEATURE_02]: Movie search display ** debouncing applied
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[FEATURE_03]: Movie search pagination
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[FEATURE_04]: Movie search loading transition
+
+[FEATURE_05]: Implement movie details page
+
+[FEATURE_06]: Add Media type filter tab
+
+[FEATURE_07]: Movie search result progress bar 
+
+[BUGFIX_01]: Infinite scrolling in mobile 
+
+[ENHANCEMENT_01]: Nextjs Vercel caching
+
+## Planned Improvements and Enhancements
+
+1. Enhance caching functionality, potentially using a Redis server.
+2. Add more featured movies to the homepage 
