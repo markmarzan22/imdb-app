@@ -27,6 +27,7 @@ export async function GET(req: Request) {
         }
 
         const response = await fetch(url, {
+            cache: 'force-cache',
             next: { revalidate: 3600 }
         });
         const data: MovieSearchResponse = await response.json();
