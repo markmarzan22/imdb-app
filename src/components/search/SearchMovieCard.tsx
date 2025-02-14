@@ -18,7 +18,10 @@ const SearchMovieCard: React.FC<SearchMovieCardProps> = ({ movie }) => {
 
     const { Title, Year, Type, Poster } = movie;
     return (
-        <Card className="max-w-[24rem] overflow-hidden mx-auto w-full" onClick={goToMoviePage}>
+        <Card
+            className="max-w-[24rem] overflow-hidden mx-auto w-full transition-transform transform hover:scale-105 hover:shadow-lg duration-300 cursor-pointer"
+            onClick={goToMoviePage}
+        >
             <CardHeader floated={false} shadow={false} color="transparent" className="m-0 rounded-none">
                 {Poster !== 'N/A' ? (
                     <img src={Poster} alt={Title} className="w-full h-[200px] object-cover" />
